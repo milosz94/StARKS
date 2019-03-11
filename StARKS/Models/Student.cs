@@ -11,8 +11,7 @@ namespace StARKS.Models
     {
         [Key]
         public int Id { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public List<Mark> Marks { get; set; }
+        
 
         [MaxLength(256)]
         public string firstname { get; set; }

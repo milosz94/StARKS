@@ -11,7 +11,7 @@ namespace StARKS.Models
     {
         [Key]
         public int code { get; set; }
-        public List<Mark> Marks { get; set; }
+       
 
         [MaxLength(100)]
         public string name { get; set; }
