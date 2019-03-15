@@ -32,6 +32,7 @@ namespace StARKS.Models
         [MaxLength(256)]
         public string City { get; set; }
 
+        [Column(TypeName = "date")]
         public DateTime DateOfBirth { get; set; }
 
         public string Gender { get; set; }

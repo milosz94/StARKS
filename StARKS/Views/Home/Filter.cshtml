@@ -2,7 +2,7 @@
 
 <head>
     <style>
-        table, th, td,thead {
+        table, th, td, thead {
             border: 1px solid black;
             border-collapse: collapse;
             text-align: center;
@@ -19,21 +19,20 @@
             text-align: center;
         }
 
-        #studentFilter,#courseFilter{
+        #studentFilter, #courseFilter {
             border: 1px;
             outline: auto;
-            text-align:left;
-            margin-right:20px;
-            margin-left:-10px;
+            text-align: left;
+            margin-right: 20px;
+            margin-left: -10px;
             height: 30px;
-            width:300px;
-
-        }
-        #modalbtnS,#modalbtnC{
-            margin-left:10px;
-            height:30px;
+            width: 300px;
         }
 
+        #modalbtnS, #modalbtnC {
+            margin-left: 10px;
+            height: 30px;
+        }
     </style>
 </head>
 <body>
@@ -43,16 +42,16 @@
     <div class="container-fluid">
 
 
-        <input class="pull-left" id="studentFilter"  type="text" value="" onkeyup="filterData();" placeholder="Filter students...">
+        <input class="pull-left" id="studentFilter" value="Das" type="text" value="" onkeyup="filterData();" placeholder="Filter students...">
 
-        <input class="pull-left" id="courseFilter"  type="text" value="" onkeyup="filterData();" placeholder="Filter courses...">
+        <input class="pull-left" id="courseFilter" type="text" value="" onkeyup="filterData();" placeholder="Filter courses...">
 
 
 
         <button id="modalbtnS" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddStudentModal">Add Student</button>
 
 
-        <button  id="modalbtnC" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddCourseModal">Add Course</button>
+        <button id="modalbtnC" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddCourseModal">Add Course</button>
 
 
     </div>
@@ -70,14 +69,19 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-               
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Student</h4>
+                </div>
 
                 <div class="modal-body">
-                    @Html.Partial("_createStudent");
+                    <p>Some text in the modal.</p>
                     <div id="dynamicContentContainer"></div>
                 </div>
 
-            
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
 
         </div>
@@ -89,14 +93,20 @@
         <div class="modal-dialog">
 
             <!-- Modal content-->
-            <div class="modal-content">             
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Course</h4>
+                </div>
 
                 <div class="modal-body">
-                    @Html.Partial("_createCourse");
+                    <p>Some text in the modal.</p>
                     <div id="dynamicContentContainer"></div>
                 </div>
 
-         
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
 
         </div>
@@ -136,20 +146,20 @@
 
             </tbody>
         </table>
-        </div>
+    </div>
 </body>
 <script language="javascript">
 
 
    // document.getElementById("studentFilter").value = getSavedValue("studentFilter");    // set the value to this input
     // document.getElementById("courseFilter").value = getSavedValue("courseFilter");
-   
+    document.onload(filterData);
+
 
     function changeGrade(sid,cid,val) {
         $.ajax({
             url: '/Home/Update',
             type: "post",
-            cashe: false,
             data: { sid:sid , cid:cid ,val:val}
         }).done(function () {
             alert("Mark can be in range 6 - 10");
@@ -162,7 +172,6 @@
         var filterC = document.getElementById("courseFilter").value;
         $.ajax({
             url: '/Home/Index',
-            cache: false,
             type: "post",
             data: {
                 FilterS: filterS,
@@ -173,15 +182,15 @@
     }
 
     function saveValue(e) {
-        var id = e.id;  // get the sender's id to save it . 
-        var val = e.value; // get the value. 
-        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+        var id = e.id;  // get the sender's id to save it .
+        var val = e.value; // get the value.
+        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
     }
 
-    //get the saved value function - return the value of "v" from localStorage. 
+    //get the saved value function - return the value of "v" from localStorage.
     function getSavedValue(v) {
         if (!localStorage.getItem(v)) {
-            return "";// You can change this to your defualt value. 
+            return "";// You can change this to your defualt value.
         }
         return localStorage.getItem(v);
     }
