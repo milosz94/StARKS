@@ -186,17 +186,17 @@ namespace StARKS.Migrations
 
             modelBuilder.Entity("StARKS.Models.Course", b =>
                 {
-                    b.Property<int>("code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .HasMaxLength(256);
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .HasMaxLength(100);
 
-                    b.HasKey("code");
+                    b.HasKey("Id");
 
                     b.ToTable("Courses");
                 });
@@ -207,19 +207,19 @@ namespace StARKS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Coursecode");
+                    b.Property<int>("CourseId");
 
-                    b.Property<int?>("StudentId");
+                    b.Property<int>("Grade");
 
-                    b.Property<int?>("mark");
+                    b.Property<int>("StudentId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Coursecode");
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Mark");
+                    b.ToTable("Marks");
                 });
 
             modelBuilder.Entity("StARKS.Models.Student", b =>
@@ -228,20 +228,20 @@ namespace StARKS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("adress")
+                    b.Property<string>("Adress")
                         .HasMaxLength(256);
 
-                    b.Property<string>("city")
+                    b.Property<string>("City")
                         .HasMaxLength(256);
 
-                    b.Property<DateTime>("dateofbirth");
+                    b.Property<DateTime>("DateOfBirth");
 
-                    b.Property<string>("firstname")
+                    b.Property<string>("FirstName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("gender");
+                    b.Property<string>("Gender");
 
-                    b.Property<string>("lastname")
+                    b.Property<string>("LastName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -297,12 +297,14 @@ namespace StARKS.Migrations
             modelBuilder.Entity("StARKS.Models.Mark", b =>
                 {
                     b.HasOne("StARKS.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("Coursecode");
+                        .WithMany("Marks")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("StARKS.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
+                        .WithMany("Marks")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

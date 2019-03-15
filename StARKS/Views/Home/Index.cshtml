@@ -1,13 +1,132 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model StARKS.Models.HomeViewModel
 
-<div>Hello world</div>
-<p>
-    <a asp-action="CreateS">Create New</a>
-</p>
+<head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
 
-<p>
-    <a asp-action="CreateC">Create New</a>
-</p>
+        th, td {
+            padding: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Modal Example</h2>
+        <!-- Trigger the modal with a button -->
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Student</button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Student</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>Some text in the modal.</p>
+                        <div id="dynamicContentContainer"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <input id="studentFilter" type="text" value="" onchange="filterData(); saveValue(this)">
+    <input id="courseFilter" type="text" value="" onchange="filterData(); saveValue(this)">
+    <table class="table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                @foreach (var course in Model.Courses)
+                {
+                    <th scope="col">@course.Name  </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var scm in Model.AllSCM)
+            {
+                <tr>
+                    <th scope="row">@scm.Sname</th>
+                    @foreach (var sc in scm.Grades)
+                    {
+                        <td>
+                            <input type="text" value=@sc.Grade.GetValueOrDefault() onchange="changeGrade(@scm.Sid, @sc.CourseId.GetValueOrDefault() ,this.value);">
+                            
+
+                        </td>
+
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</body>
+<script language="javascript">
+
+
+    document.getElementById("studentFilter").value = getSavedValue("studentFilter");    // set the value to this input
+    document.getElementById("courseFilter").value = getSavedValue("courseFilter");
+
+
+
+    function changeGrade(sid,cid,val) {
+        $.ajax({
+            url: '/Home/Update',
+            type: "post",
+            data: { sid:sid , cid:cid ,val:val}
+        }).done(function () {
+            alert(sid + " " +  val + " " + cid);
+        });
+    }
+    function filterData() {
+
+
+
+        var filterS = document.getElementById("studentFilter").value;
+       var filterC = document.getElementById("courseFilter").value;
+        $.ajax({
+            url: '/Home/',
+            type: "post",
+            data: {
+                FilterS: filterS,
+                filterC: filterC
+            }
+        }).done(function () {
+            
+        });
+    }
+
+    function saveValue(e) {
+        var id = e.id;  // get the sender's id to save it . 
+        var val = e.value; // get the value. 
+        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+    }
+
+    //get the saved value function - return the value of "v" from localStorage. 
+    function getSavedValue(v) {
+        if (!localStorage.getItem(v)) {
+            return "";// You can change this to your defualt value. 
+        }
+        return localStorage.getItem(v);
+    }
+
+
+
+</script>

@@ -10,22 +10,23 @@ using StARKS.Models;
 
 namespace StARKS.Controllers
 {
-    public class CourseController : Controller
+    public class MarkController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CourseController(ApplicationDbContext context)
+        public MarkController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Course
+        // GET: Mark
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Courses.ToListAsync());
+            var applicationDbContext = _context.Marks.Include(m => m.Course).Include(m => m.Student);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Course/Details/5
+        // GET: Mark/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,45 @@ namespace StARKS.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
+            var mark = await _context.Marks
+                .Include(m => m.Course)
+                .Include(m => m.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
+            if (mark == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(mark);
         }
 
-        // GET: Course/Create
+        // GET: Mark/Create
         public IActionResult Create()
         {
+            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id");
+            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Id");
             return View();
         }
 
-        // POST: Course/Create
+        // POST: Mark/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Course course)
+        public async Task<IActionResult> Create([Bind("Id,StudentId,CourseId,Grade")] Mark mark)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
+                _context.Add(mark);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", mark.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Id", mark.StudentId);
+            return View(mark);
         }
 
-        // GET: Course/Edit/5
+        // GET: Mark/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +80,24 @@ namespace StARKS.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var mark = await _context.Marks.FindAsync(id);
+            if (mark == null)
             {
                 return NotFound();
             }
-            return View(course);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", mark.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Id", mark.StudentId);
+            return View(mark);
         }
 
-        // POST: Course/Edit/5
+        // POST: Mark/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,CourseId,Grade")] Mark mark)
         {
-            if (id != course.Id)
+            if (id != mark.Id)
             {
                 return NotFound();
             }
@@ -97,12 +106,12 @@ namespace StARKS.Controllers
             {
                 try
                 {
-                    _context.Update(course);
+                    _context.Update(mark);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CourseExists(course.Id))
+                    if (!MarkExists(mark.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +122,12 @@ namespace StARKS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(course);
+            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", mark.CourseId);
+            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Id", mark.StudentId);
+            return View(mark);
         }
 
-        // GET: Course/Delete/5
+        // GET: Mark/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +135,32 @@ namespace StARKS.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
+            var mark = await _context.Marks
+                .Include(m => m.Course)
+                .Include(m => m.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (course == null)
+            if (mark == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(mark);
         }
 
-        // POST: Course/Delete/5
+        // POST: Mark/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(course);
+            var mark = await _context.Marks.FindAsync(id);
+            _context.Marks.Remove(mark);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(int id)
+        private bool MarkExists(int id)
         {
-            return _context.Courses.Any(e => e.Id == id);
+            return _context.Marks.Any(e => e.Id == id);
         }
     }
 }

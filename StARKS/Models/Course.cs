@@ -7,19 +7,18 @@ using System.Threading.Tasks;
 
 namespace StARKS.Models
 {
-    public class Course
+    public partial class Course
     {
         [Key]
-        public int code { get; set; }
+        public int Id { get; set; }
        
 
         [MaxLength(100)]
-        public string name { get; set; }
+        public string Name { get; set; }
 
         [MaxLength(256)]
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        
-        //public ICollection<Student> Students { get; set; }
+        public virtual ICollection<Mark> Marks { get; set; }
     }
 }

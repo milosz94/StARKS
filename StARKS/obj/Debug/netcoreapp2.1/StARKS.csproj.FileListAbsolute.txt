@@ -2,7 +2,9 @@ C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.dep
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.runtimeconfig.json
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.runtimeconfig.dev.json
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.dll
-C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.csprojAssemblyReference.cache
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.pdb
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.Views.dll
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.Views.pdb
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.csproj.CoreCompileInputs.cache
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.RazorAssemblyInfo.cache
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.RazorAssemblyInfo.cs
@@ -20,13 +22,11 @@ C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\View
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\_ViewStart.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.RazorTargetAssemblyInfo.cache
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.RazorTargetAssemblyInfo.cs
-C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.pdb
-C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.Views.dll
-C:\Users\munja\source\repos\ipp\StARKS\StARKS\bin\Debug\netcoreapp2.1\StARKS.Views.pdb
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.Views.pdb
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.dll
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.pdb
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.csproj.CopyComplete
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\StARKS.csprojAssemblyReference.cache
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Student\Create.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Student\Delete.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Student\Details.g.cshtml.cs
@@ -37,5 +37,8 @@ C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\View
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Course\Details.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Course\Edit.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Course\Index.g.cshtml.cs
-C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\CreateS.g.cshtml.cs
-C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\CreateC.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Mark\Create.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Mark\Delete.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Mark\Details.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Mark\Edit.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Mark\Index.g.cshtml.cs

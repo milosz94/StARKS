@@ -7,29 +7,36 @@ using System.Threading.Tasks;
 
 namespace StARKS.Models
 {
-    public class Student
+    public partial class Student
     {
+        public Student()
+        {
+            this.Marks = new HashSet<Mark>();
+
+        }
+
+
         [Key]
         public int Id { get; set; }
         
 
         [MaxLength(256)]
-        public string firstname { get; set; }
+        public string FirstName { get; set; }
 
         [MaxLength(256)]
-        public string lastname { get; set; }
+        public string LastName { get; set; }
 
         [MaxLength(256)]
-        public string adress { get; set; }
+        public string Adress { get; set; }
 
         [MaxLength(256)]
-        public string city { get; set; }
+        public string City { get; set; }
 
-        public DateTime dateofbirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
-        public string gender { get; set; }
+        public string Gender { get; set; }
 
         
-
+        public virtual ICollection<Mark> Marks { get; set; }
     }
 }

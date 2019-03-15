@@ -10,8 +10,8 @@ using StARKS.Data;
 namespace StARKS.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190311194901_InitialCreate3")]
-    partial class InitialCreate3
+    [Migration("20190311231108_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,21 +188,17 @@ namespace StARKS.Migrations
 
             modelBuilder.Entity("StARKS.Models.Course", b =>
                 {
-                    b.Property<int>("code")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MarkId");
-
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .HasMaxLength(256);
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .HasMaxLength(100);
 
-                    b.HasKey("code");
-
-                    b.HasIndex("MarkId");
+                    b.HasKey("Id");
 
                     b.ToTable("Courses");
                 });
@@ -213,22 +209,19 @@ namespace StARKS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CourseId");
+
+                    b.Property<int>("Grade");
+
                     b.Property<int>("StudentId");
-
-                    b.Property<int>("code");
-
-                    b.Property<string>("firstname")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("lastname")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("name")
-                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mark");
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Marks");
                 });
 
             modelBuilder.Entity("StARKS.Models.Student", b =>
@@ -237,31 +230,23 @@ namespace StARKS.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Coursecode");
-
-                    b.Property<int?>("MarkId");
-
-                    b.Property<string>("adress")
+                    b.Property<string>("Adress")
                         .HasMaxLength(256);
 
-                    b.Property<string>("city")
+                    b.Property<string>("City")
                         .HasMaxLength(256);
 
-                    b.Property<DateTime>("dateofbirth");
+                    b.Property<DateTime>("DateOfBirth");
 
-                    b.Property<string>("firstname")
+                    b.Property<string>("FirstName")
                         .HasMaxLength(256);
 
-                    b.Property<string>("gender");
+                    b.Property<string>("Gender");
 
-                    b.Property<string>("lastname")
+                    b.Property<string>("LastName")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Coursecode");
-
-                    b.HasIndex("MarkId");
 
                     b.ToTable("Students");
                 });
@@ -311,22 +296,17 @@ namespace StARKS.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("StARKS.Models.Course", b =>
+            modelBuilder.Entity("StARKS.Models.Mark", b =>
                 {
-                    b.HasOne("StARKS.Models.Mark")
-                        .WithMany("Courses")
-                        .HasForeignKey("MarkId");
-                });
+                    b.HasOne("StARKS.Models.Course", "Course")
+                        .WithMany("Marks")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity("StARKS.Models.Student", b =>
-                {
-                    b.HasOne("StARKS.Models.Course")
-                        .WithMany("Students")
-                        .HasForeignKey("Coursecode");
-
-                    b.HasOne("StARKS.Models.Mark")
-                        .WithMany("Students")
-                        .HasForeignKey("MarkId");
+                    b.HasOne("StARKS.Models.Student", "Student")
+                        .WithMany("Marks")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

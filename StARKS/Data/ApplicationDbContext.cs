@@ -15,7 +15,7 @@ namespace StARKS.Data
             }
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
-        public DbSet<StARKS.Models.Mark> Mark { get; set; }
+        public DbSet<Mark> Marks { get; set; }
 
 
     }
