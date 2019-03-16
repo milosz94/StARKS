@@ -1,8 +1,10 @@
 ﻿@model StARKS.Models.HomeViewModel
 
 <head>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
     <style>
-        table, th, td,thead {
+        table, th, td, thead {
             border: 1px solid black;
             border-collapse: collapse;
             text-align: center;
@@ -19,23 +21,91 @@
             text-align: center;
         }
 
-        #studentFilter,#courseFilter{
+        #studentFilter, #courseFilter {
             border: 1px;
             outline: auto;
-            text-align:left;
-            margin-right:20px;
-            margin-left:-10px;
+            text-align: left;
+            margin-right: 20px;
+            margin-left: -10px;
             height: 30px;
-            width:300px;
-
-        }
-        #modalbtnS,#modalbtnC{
-            margin-left:10px;
-            height:30px;
+            width: 300px;
         }
 
+        #modalbtnS, #modalbtnC {
+            margin-left: 10px;
+            height: 30px;
+        }
     </style>
 </head>
+
+<script>
+
+    //Filter Functions
+    $(document).ready(function () {
+        $('#studentFilter').on('keyup', function () {
+            var searchTerm = $(this).val().toLowerCase();
+            $('#tableX tbody tr').each(function () {
+                var lineStr = $(this).text().toLowerCase();
+                if (lineStr.indexOf(searchTerm) === -1) {
+
+                  $(this).hide();
+
+                } else {
+                    $(this).show();
+                }
+            });
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        $('#courseFilter').on('keyup', function () {
+            var searchTerm = $(this).val().toLowerCase();
+            $('#tableX thead th').each(function () {
+                var lineStr = $(this).text().toLowerCase();
+                if (lineStr != " ") {
+                    if (lineStr.indexOf(searchTerm) === -1) {
+                        var $curr = $(this);
+                        var $cell = $curr.closest('th,td')
+                        var $table = $curr.closest('table')
+
+
+                        var cellIndex = $cell[0].cellIndex + 1;
+
+                        $table.find("tbody tr, thead tr")
+                            .children(":nth-child(" + cellIndex + ")")
+                            .hide()
+
+
+                        $
+                    } else {
+                        var $curr = $(this);
+                        var $cell = $curr.closest('th,td')
+                        var $table = $curr.closest('table')
+
+
+                        var cellIndex = $cell[0].cellIndex + 1;
+
+                        $table.find("tbody tr, thead tr")
+                            .children(":nth-child(" + cellIndex + ")")
+                            .show()
+
+
+                        $(this).show();
+                    }
+                }
+            });
+        });
+    });
+
+
+
+
+    
+</script>
+
+
 <body>
 
 
@@ -43,16 +113,16 @@
     <div class="container-fluid">
 
 
-        <input class="pull-left" id="studentFilter"  type="text" value="" onkeyup="filterData();" placeholder="Filter students...">
+        <input class="pull-left" id="studentFilter" type="text" value="" placeholder="Filter students...">
 
-        <input class="pull-left" id="courseFilter"  type="text" value="" onkeyup="filterData();" placeholder="Filter courses...">
+        <input class="pull-left" id="courseFilter" type="text" value=""  placeholder="Filter courses...">
 
 
 
         <button id="modalbtnS" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddStudentModal">Add Student</button>
 
 
-        <button  id="modalbtnC" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddCourseModal">Add Course</button>
+        <button id="modalbtnC" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddCourseModal">Add Course</button>
 
 
     </div>
@@ -70,14 +140,14 @@
 
             <!-- Modal content-->
             <div class="modal-content">
-               
+
 
                 <div class="modal-body">
                     @Html.Partial("_createStudent");
                     <div id="dynamicContentContainer"></div>
                 </div>
 
-            
+
             </div>
 
         </div>
@@ -89,14 +159,14 @@
         <div class="modal-dialog">
 
             <!-- Modal content-->
-            <div class="modal-content">             
+            <div class="modal-content">
 
                 <div class="modal-body">
                     @Html.Partial("_createCourse");
                     <div id="dynamicContentContainer"></div>
                 </div>
 
-         
+
             </div>
 
         </div>
@@ -107,7 +177,7 @@
     <br />
     <br />
     <div class="table-responsive">
-        <table class="table">
+        <table id="tableX" class="table">
             <thead>
                 <tr>
                     <th scope="col"> </th>
@@ -136,21 +206,21 @@
 
             </tbody>
         </table>
-        </div>
+    </div>
 </body>
 <script language="javascript">
 
 
-   // document.getElementById("studentFilter").value = getSavedValue("studentFilter");    // set the value to this input
+    // document.getElementById("studentFilter").value = getSavedValue("studentFilter");    // set the value to this input
     // document.getElementById("courseFilter").value = getSavedValue("courseFilter");
-   
 
-    function changeGrade(sid,cid,val) {
+
+    function changeGrade(sid, cid, val) {
         $.ajax({
             url: '/Home/Update',
             type: "post",
             cashe: false,
-            data: { sid:sid , cid:cid ,val:val}
+            data: { sid: sid, cid: cid, val: val }
         }).done(function () {
             alert("Mark can be in range 6 - 10");
             location.reload();
@@ -173,19 +243,15 @@
     }
 
     function saveValue(e) {
-        var id = e.id;  // get the sender's id to save it . 
-        var val = e.value; // get the value. 
-        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+        var id = e.id;  // get the sender's id to save it .
+        var val = e.value; // get the value.
+        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
     }
-
-    //get the saved value function - return the value of "v" from localStorage. 
-    function getSavedValue(v) {
-        if (!localStorage.getItem(v)) {
-            return "";// You can change this to your defualt value. 
-        }
-        return localStorage.getItem(v);
-    }
-
-
+   
 
 </script>
+
+
+
+
+

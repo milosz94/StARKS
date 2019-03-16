@@ -54,7 +54,7 @@ using StARKS.Models;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(38, 782, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "f479f0f6906849aca2639886a99cb854", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "fce7953b78454789b76332586598d1f0", async() => {
                 BeginContext(44, 769, true);
                 WriteLiteral(@"
     <style>
@@ -108,7 +108,7 @@ using StARKS.Models;
             WriteLiteral("\r\n");
             EndContext();
             BeginContext(822, 3426, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "12ffcd5b412746e9b733a54a55bb494e", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "1c50a7e5ff8d4dff9bf8b5923d8c46c1", async() => {
                 BeginContext(828, 2571, true);
                 WriteLiteral(@"
 
