@@ -74,17 +74,14 @@ namespace StARKS.Controllers
             //return PartialView("<h3>" + sid.ToString() + " Sadameee! changed to" + val.ToString() + " " + cid.ToString() + " </h3>", "text/html");
         }
         
-        public IActionResult Index(string filterS, string filterC)
+        public IActionResult Index()
         {
 
             ModelState.Clear();
+            
+           
 
-            dynamic info;
-            dynamic studList;
-            dynamic coursList;
-            if (filterS == null && filterC == null)
-            {
-                info =
+               var info =
                       (from st in _context.Students.Include("Marks")
                        from co in _context.Courses.Include("Marks")
                        select new
@@ -98,81 +95,144 @@ namespace StARKS.Controllers
                        }
 
                        ).ToList();
-                studList = _context.Students.ToList();
-                coursList = _context.Courses.ToList();
-            }
+              var  studList = _context.Students.ToList();
+              var coursList = _context.Courses.ToList();
+            
+            
 
-            else if (filterS != null && filterC == null)
+            HomeViewModel hvm = new HomeViewModel
             {
-                info =
-                       (from st in _context.Students.Include("Marks")
-                        from co in _context.Courses.Include("Marks")
-                        where st.FirstName.StartsWith(filterS)
-                        select new
-                        {
-                            sid = st.Id,
-                            sname = st.FirstName + " " + st.LastName,
-                            cid = co.Id,
-                            cname = co.Name,
-                            grad = st.Marks.Where(o => o.StudentId == st.Id && o.CourseId == co.Id).FirstOrDefault().Grade
-                        }).ToList();
+                AllSCM = new List<SCM>(),
 
-                studList = (from st in _context.Students
-                            where st.FirstName.StartsWith(filterS)
-                            select st).ToList();
-                coursList = _context.Courses.ToList();
+                Students = studList,
 
-            }
-            else if (filterS == null && filterC != null)
+                Courses = coursList
+            };
+
+
+            for (int i = 0; i < studList.Count; i++)
             {
-                info =
-                        (from st in _context.Students.Include("Marks")
-                         from co in _context.Courses.Include("Marks")
-                         where co.Name.StartsWith(filterC)
-                         select new
-                         {
-                             sid = st.Id,
-                             sname = st.FirstName + " " + st.LastName,
-                             cid = co.Id,
-                             cname = co.Name,
-                             grad = st.Marks.Where(o => o.StudentId == st.Id && o.CourseId == co.Id
-                                 ).FirstOrDefault().Grade
-                         }).ToList();
+                SCM sc = new SCM();
+                sc.Sid = studList[i].Id;
+                sc.FirstName = studList[i].FirstName;
+                sc.Sname = studList[i].FirstName + " " + studList[i].LastName;
 
-                studList = _context.Students.ToList();
+                var tmpL = new List<Mark>();
+                foreach (var inf in info)
+                {
 
-                coursList = (from co in _context.Courses
-                             where co.Name.StartsWith(filterC)
-                             select co
-                ).ToList();
+                    if (inf.sid == studList[i].Id)
+                    {
+                        tmpL.Add(new Mark { Grade = inf.grad, CourseId = inf.cid });
+                        //tmpL.Add(inf.grad,inf.cid);
+                    }
+                }
+                sc.Grades = tmpL;
+                hvm.AllSCM.Add(sc);
+
+
             }
-            else
+           return View(hvm);
+        }
+
+
+        [HttpPost]
+        public IActionResult Index(HomeViewModel hvm)
+        {
+            return View(hvm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Adress,City,DateOfBirth,Gender")] HomeViewModel hvm)
+        {
+            if (ModelState.IsValid)
             {
-                info =
-                       (from st in _context.Students.Include("Marks")
-                        from co in _context.Courses.Include("Marks")
-                        where st.FirstName.StartsWith(filterS) && co.Name.StartsWith(filterC)
-                        select new
-                        {
-                            sid = st.Id,
-                            sname = st.FirstName + " " + st.LastName,
-                            cid = co.Id,
-                            cname = co.Name,
-                            grad = st.Marks.Where(o => o.StudentId == st.Id && o.CourseId == co.Id
-                                ).FirstOrDefault().Grade
-                        }).ToList();
+                Student student = new Student { Id = hvm.Id, FirstName = hvm.FirstName, LastName = hvm.LastName, Adress = hvm.Adress, City = hvm.City, DateOfBirth = hvm.DateOfBirth, Gender = hvm.Gender };
 
-                studList = (from st in _context.Students
-                            where st.FirstName.StartsWith(filterS)
-                            select st
 
-                               ).ToList();
-
-                coursList = (from co in _context.Courses
-                             where co.Name.StartsWith(filterC)
-                             select co
-                                ).ToList();
+                _context.Add(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
+            return View("Index");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateC([Bind("Cid,Name,Description")] HomeViewModel hvm)
+        {
+            if (ModelState.IsValid)
+            {
+                Course course = new Course {Id = hvm.Cid ?? 0, Name=hvm.Name , Description= hvm.Description };
+                _context.Courses.Add(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditStudent(int id, [Bind("Sid,FirstName,LastName,Adress,City,DateOfBirth,Gender")] HomeViewModel hvm)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                Student student = new Student { Id =id, FirstName = hvm.FirstName, LastName = hvm.LastName, Adress = hvm.Adress, City = hvm.City, DateOfBirth = hvm.DateOfBirth, Gender = hvm.Gender };
+
+                _context.Update(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+
+            }
+              return View("Index");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCourse(int id, [Bind("Id,Name,Description")] HomeViewModel hvm)
+        {
+            if (ModelState.IsValid)
+            {
+
+                Course course = new Course { Id = hvm.Id, Name = hvm.Name, Description = hvm.Description };
+                _context.Update(course);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+
+            }
+            return View("Index");
+        }
+
+
+
+
+
+
+
+        public IActionResult SelectStudent(int? id)
+        {
+            var stud = _context.Students.Find(id);
+
+            var info =
+                    (from st in _context.Students.Include("Marks")
+                     from co in _context.Courses.Include("Marks")
+                     select new
+                     {
+                         sid = st.Id,
+                         sname = st.FirstName + " " + st.LastName,
+                         cid = co.Id,
+                         cname = co.Name,
+                         grad = st.Marks.Where(o => o.StudentId == st.Id && o.CourseId == co.Id
+                             ).FirstOrDefault().Grade
+                     }
+
+                     ).ToList();
+            var studList = _context.Students.ToList();
+            var coursList = _context.Courses.ToList();
 
 
 
@@ -207,50 +267,134 @@ namespace StARKS.Controllers
 
 
             }
-            if(HttpContext.Request.Method == HttpMethod.Post.Method)
-                 return RedirectToAction("Index");
-            else
-                 return View(new HomeViewModel { AllSCM = hvm.AllSCM , Courses=hvm.Courses , Students= hvm.Students });
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Adress,City,DateOfBirth,Gender")] HomeViewModel hvm)
-        {
-            if (ModelState.IsValid)
-            {
-                Student student = new Student { Id = hvm.Id, FirstName = hvm.FirstName, LastName = hvm.LastName, Adress = hvm.Adress, City = hvm.City, DateOfBirth = hvm.DateOfBirth, Gender = hvm.Gender };
+            hvm.Sid = id;
+            hvm.Id = id ?? 0;
+            hvm.FirstName = stud.FirstName;
+            hvm.LastName = stud.LastName;
+            hvm.DateOfBirth = stud.DateOfBirth;
+            hvm.Gender = stud.Gender;
+            hvm.Adress = stud.Adress;
+            hvm.City = stud.City;
 
-
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View("Index");
+            
+            return View("Index",hvm);
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateC([Bind("Cid,Name,Description")] HomeViewModel hvm)
+
+        public IActionResult SelectCourse(int ?id)
         {
-            if (ModelState.IsValid)
+            var courses = _context.Courses.Find(id);
+
+            var info =
+                    (from st in _context.Students.Include("Marks")
+                     from co in _context.Courses.Include("Marks")
+                     select new
+                     {
+                         sid = st.Id,
+                         sname = st.FirstName + " " + st.LastName,
+                         cid = co.Id,
+                         cname = co.Name,
+                         grad = st.Marks.Where(o => o.StudentId == st.Id && o.CourseId == co.Id
+                             ).FirstOrDefault().Grade
+                     }
+
+                     ).ToList();
+            var studList = _context.Students.ToList();
+            var coursList = _context.Courses.ToList();
+
+
+
+            HomeViewModel hvm = new HomeViewModel
             {
-                Course course = new Course {Id = hvm.Cid, Name=hvm.Name , Description= hvm.Description };
-                _context.Courses.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                AllSCM = new List<SCM>(),
+
+                Students = studList,
+
+                Courses = coursList
+            };
+
+
+            for (int i = 0; i < studList.Count; i++)
+            {
+                SCM sc = new SCM();
+                sc.Sid = studList[i].Id;
+                sc.Sname = studList[i].FirstName + " " + studList[i].LastName;
+
+                var tmpL = new List<Mark>();
+                foreach (var inf in info)
+                {
+
+                    if (inf.sid == studList[i].Id)
+                    {
+                        tmpL.Add(new Mark { Grade = inf.grad, CourseId = inf.cid });
+                        //tmpL.Add(inf.grad,inf.cid);
+                    }
+                }
+                sc.Grades = tmpL;
+                hvm.AllSCM.Add(sc);
+
+
             }
-            return View("Index");
+            hvm.Cid = id;
+            hvm.Description = courses.Description;
+            hvm.Name = courses.Name;
+
+
+            return View("Index", hvm);
+        }
+
+
+
+
+        public IActionResult DeleteStudent(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var student = _context.Students.Find(id);
+
+
+
+            _context.Students.Remove(student);
+            var mark = from m in _context.Marks
+                       where m.StudentId == student.Id
+                       select m;
+
+            _context.Marks.RemoveRange(mark);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteCourse(int? cid)
+        {
+            if (cid == null)
+            {
+                return NotFound();
+            }
+            var course = _context.Courses.Find(cid);
+
+            _context.Courses.Remove(course);
+            var mark = from m in _context.Marks
+                       where m.CourseId == course.Id
+                       select m;
+            _context.Marks.RemoveRange(mark);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+
         }
 
 
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-public IActionResult Error()
-{
-    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-}
+        public IActionResult Error()
+        {
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }

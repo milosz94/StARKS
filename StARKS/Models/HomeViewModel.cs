@@ -17,6 +17,10 @@ namespace StARKS.Models
         public int Id { get; set; }
 
 
+
+        public int ?Sid { get; set; }
+
+
         [MaxLength(256)]
         public string FirstName { get; set; }
 
@@ -35,7 +39,10 @@ namespace StARKS.Models
         public string Gender { get; set; }
 
 
-        public int Cid { get; set; }
+
+
+
+        public int ?Cid { get; set; }
         [MaxLength(100)]
         public string Name { get; set; }
 

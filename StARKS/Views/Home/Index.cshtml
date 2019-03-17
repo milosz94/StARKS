@@ -6,8 +6,12 @@
     <style>
         table, th, td, thead {
             border: 1px solid black;
+            border-bottom: 1px solid black;
             border-collapse: collapse;
             text-align: center;
+        }
+        .table > thead > tr > th {
+            border-bottom: 1px solid black;
         }
 
         th, td {
@@ -48,7 +52,7 @@
                 var lineStr = $(this).text().toLowerCase();
                 if (lineStr.indexOf(searchTerm) === -1) {
 
-                  $(this).hide();
+                    $(this).hide();
 
                 } else {
                     $(this).show();
@@ -101,8 +105,17 @@
 
 
 
-
-    
+    function changeGrade(sid, cid, val) {
+        $.ajax({
+            url: '/Home/Update',
+            type: "post",
+            cashe: false,
+            data: { sid: sid, cid: cid, val: val }
+        }).done(function () {
+            alert("Mark can be in range 6 - 10");
+            location.reload();
+        });
+    }
 </script>
 
 
@@ -115,13 +128,13 @@
 
         <input class="pull-left" id="studentFilter" type="text" value="" placeholder="Filter students...">
 
-        <input class="pull-left" id="courseFilter" type="text" value=""  placeholder="Filter courses...">
+        <input class="pull-left" id="courseFilter" type="text" value="" placeholder="Filter courses...">
+
+
 
 
 
         <button id="modalbtnS" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddStudentModal">Add Student</button>
-
-
         <button id="modalbtnC" type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#AddCourseModal">Add Course</button>
 
 
@@ -143,7 +156,7 @@
 
 
                 <div class="modal-body">
-                    @Html.Partial("_createStudent");
+                    @Html.Partial("_createStudent")
                     <div id="dynamicContentContainer"></div>
                 </div>
 
@@ -162,7 +175,24 @@
             <div class="modal-content">
 
                 <div class="modal-body">
-                    @Html.Partial("_createCourse");
+                    @Html.Partial("_createCourse")
+                    <div id="dynamicContentContainer"></div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="EditOrDeleteStudentModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-body" id="part">
+                    @Html.Partial("_editOrDeleteStudent")
                     <div id="dynamicContentContainer"></div>
                 </div>
 
@@ -173,6 +203,22 @@
     </div>
 
 
+    <div class="modal fade" id="EditOrDeleteCourseModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    @Html.Partial("_editOrDeleteCourse")
+                    <div id="dynamicContentContainer"></div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
 
     <br />
     <br />
@@ -183,7 +229,15 @@
                     <th scope="col"> </th>
                     @foreach (var course in Model.Courses)
                     {
-                        <th scope="col">@course.Name  </th>
+                    <th scope="col">
+                        @Html.ActionLink(" ", "SelectCourse", "Home", new { Id = course.Id }, new { @class = "glyphicon glyphicon-plus-sign" })
+
+                        <a data-toggle="modal" data-target="#EditOrDeleteCourseModal">
+                            @course.Name
+                        </a>
+
+                    </th>
+
                     }
                 </tr>
             </thead>
@@ -191,7 +245,18 @@
                 @foreach (var scm in Model.AllSCM)
                 {
                     <tr>
-                        <th scope="row">@scm.Sname</th>
+                        @*@Html.ActionLink(scm.Sname, "SelectStudent", "Home", new { Id = scm.Sid })*@
+                        <th scope="row">
+                            @Html.ActionLink(" ", "SelectStudent", "Home", new { Id = scm.Sid }, new { @class = "glyphicon glyphicon-plus-sign" })
+                            <a id="PopupStudDel" class="@scm.Sid" data-toggle="modal" data-target="#EditOrDeleteStudentModal">
+                                @scm.Sname
+                            </a>
+                        </th>
+
+
+
+
+
                         @foreach (var sc in scm.Grades)
                         {
                             <td>
@@ -207,51 +272,9 @@
             </tbody>
         </table>
     </div>
+
+
+    <br />
+    <br />
+
 </body>
-<script language="javascript">
-
-
-    // document.getElementById("studentFilter").value = getSavedValue("studentFilter");    // set the value to this input
-    // document.getElementById("courseFilter").value = getSavedValue("courseFilter");
-
-
-    function changeGrade(sid, cid, val) {
-        $.ajax({
-            url: '/Home/Update',
-            type: "post",
-            cashe: false,
-            data: { sid: sid, cid: cid, val: val }
-        }).done(function () {
-            alert("Mark can be in range 6 - 10");
-            location.reload();
-        });
-    }
-    function filterData() {
-
-        var filterS = document.getElementById("studentFilter").value;
-        var filterC = document.getElementById("courseFilter").value;
-        $.ajax({
-            url: '/Home/Index',
-            cache: false,
-            type: "post",
-            data: {
-                FilterS: filterS,
-                filterC: filterC
-            }
-        }).done(function () {
-        });
-    }
-
-    function saveValue(e) {
-        var id = e.id;  // get the sender's id to save it .
-        var val = e.value; // get the value.
-        localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
-    }
-   
-
-</script>
-
-
-
-
-

@@ -45,3 +45,6 @@ C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\View
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\Filter.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\_createStudent.g.cshtml.cs
 C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\_createCourse.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\_deleteStudent.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\_editOrDeleteStudent.g.cshtml.cs
+C:\Users\munja\source\repos\ipp\StARKS\StARKS\obj\Debug\netcoreapp2.1\Razor\Views\Home\_editOrDeleteCourse.g.cshtml.cs
